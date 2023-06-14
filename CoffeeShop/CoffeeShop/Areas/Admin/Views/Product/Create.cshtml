@@ -1,0 +1,55 @@
+﻿@using CoffeeShop.Areas.Admin
+ 
+@model ProductCreateVM
+@{
+    ViewData["Title"] = "Create";
+
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="row">
+            <div class="col-12">
+                <form method="post">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" asp-for="Name">
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Desc</label>
+                        <input class="form-control" asp-for="Description">
+                        <span class="text-danger" asp-validation-for="Description"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input class="form-control" asp-for="Price">
+                        <span class="text-danger" asp-validation-for="Price"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input class="form-control" asp-for="Image">
+                        <span class="text-danger" asp-validation-for="Image"></span>
+                    </div>
+                   
+                    <div class="form-group">
+                     <ul>
+                            @foreach (var aromas in ViewBag.Aromas)
+                            {
+                                <li>
+                                    <input type="checkbox" value="@aromas.Id" name="AromasIds" />
+                                    @aromas.Name
+                                </li>
+                            }
+                     </ul>
+
+                    </div>
+                    <button type="submit" class="my-2 btn btn-success"><i class="feather mr-2 icon-check-circle"></i>Create</button>
+                    <a asp-action="Index" class="my-2 btn btn-secondary"><i class="feather mr-2 icon-check-circle"></i>Cancel</a>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
