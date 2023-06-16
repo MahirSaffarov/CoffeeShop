@@ -2,6 +2,7 @@
 using CoffeeShop.DAL;
 using CoffeeShop.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop.Areas.Admin.Controllers
@@ -35,7 +36,9 @@ namespace CoffeeShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            ViewBag.Aromas = _context.Aromas.ToList();
+            var aromas = _context.Aromas.ToList();
+            var aromasList = new SelectList(aromas, "Id","Name");
+            ViewBag.aromas = aromasList;
             return View();
         }
         [HttpPost]
@@ -53,14 +56,14 @@ namespace CoffeeShop.Areas.Admin.Controllers
             };
             await _context.Products.AddAsync(pr);
             await _context.SaveChangesAsync();
-            foreach (var aroma in model.Aromas)
+            foreach (var id in model.AromaId)
             {
                 ProductAroma prA = new()
                 {
                     Product = pr,
-                    Aroma = aroma,
+                    Aroma = await _context.Aromas.FirstOrDefaultAsync(m=>m.Id == id),
                     ProductId = pr.Id,
-                    AromaId = aroma.Id
+                    AromaId = id
                 };
               await  _context.ProductAromas.AddAsync(prA);
                 await _context.SaveChangesAsync();
